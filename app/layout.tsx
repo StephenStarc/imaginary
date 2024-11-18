@@ -3,7 +3,13 @@ import { IBM_Plex_Sans } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-
+import {
+  ClerkProvider,
+  SignInButton,
+  SignedIn,
+  SignedOut,
+  UserButton
+} from '@clerk/nextjs'
 const ibmPlexSans = IBM_Plex_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
@@ -32,15 +38,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
+      <ClerkProvider>
+        <html lang="en">
+          <body
         className={cn(
           "font-ibmPlexSans antialiased",
           ibmPlexSans.variable,
         )}
       >
-        {children}
-      </body>
-    </html>
+        <SignedOut>
+            <SignInButton />
+          </SignedOut>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
+          {children}
+          </body>
+        </html>
+      </ClerkProvider>
   );
 }
