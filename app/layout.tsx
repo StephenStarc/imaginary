@@ -38,7 +38,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-      <ClerkProvider>
+      <ClerkProvider appearance={{
+        variables: {
+          colorPrimary: "#624cf5",
+        },
+      }}>
         <html lang="en">
           <body
         className={cn(
@@ -50,7 +54,6 @@ export default function RootLayout({
             <SignInButton />
           </SignedOut>
           <SignedIn>
-            <UserButton />
           </SignedIn>
           {children}
           </body>
