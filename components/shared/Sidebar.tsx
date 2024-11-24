@@ -1,10 +1,11 @@
 'use client'
 import { navLinks } from '@/constants'
-import { SignedIn, UserButton } from '@clerk/nextjs'
+import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React from 'react'
+import { Button } from '../ui/button'
 
 function Sidebar() {
   const pathname = usePathname();
@@ -17,7 +18,7 @@ function Sidebar() {
             <nav className='sidebar-nav'>
                 <SignedIn>
                     <ul className='sidebar-nav-elements'>
-                        {navLinks.map((link) => {
+                        {navLinks.slice(0, 6).map((link) => {
                             const isActive = pathname === link.route;
                             return (
                                 <li key={link.label} className={`sidebar-nav_element group ${isActive ? 'bg-purple-gradient text-white' : 'text-gray-500'}`}>
@@ -28,8 +29,34 @@ function Sidebar() {
                                 </li>
                             )
                         })}
+                        </ul>
+                        <ul className='sidebar-nav_elements'>
+                        {navLinks.slice(6).map((link) => {
+                            const isActive = pathname === link.route;
+                            return (
+                                <li key={link.label} className={`sidebar-nav_element group ${isActive ? 'bg-purple-gradient text-white' : 'text-gray-500'}`}>
+                                    <Link className='sidebar-link' href={link.route}>
+                                    <Image src={link.icon} alt={link.label} width={24} height={24} className={`${isActive && 'brightness-0 invert'}`}/>
+                                    {link.label}
+                                </Link>
+                                </li>
+                            )
+                        })}
+                        <li className='flex cursor-pointer gap-2 p-4 '>
+                            <UserButton showName={true} />
+                        </li>
                     </ul>
                 </SignedIn>
+
+                <SignedOut>
+                        
+                        <Button asChild className='button bg-purple-gradient bg-color'>
+                            <Link href="/sign-in">
+                                Login
+                            </Link>
+                        </Button>
+                   
+                </SignedOut>
             </nav>
         </div>
     </aside>
